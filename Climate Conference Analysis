@@ -1,0 +1,48 @@
+Climate Conference Project
+
+Database: https://www.db-fiddle.com/f/pxMci1sLL945KHKYvpe9W6/1
+
+--LEFT JOIN: Show all VIPs and the event name each one is attending. 
+--Show everyone, even if they are not attending any event.
+
+SELECT V.last_name, V.first_name, E.event_name 
+FROM vips V LEFT JOIN events E
+ON V.event = E.event_id;
+
+
+--INNER JOIN: Show all VIPs and the event name they are attending. 
+--Do not show VIPs that will not attend any event.
+
+SELECT V.last_name, V.first_name, E.event_name 
+FROM vips V INNER JOIN events E
+ON V.event = E.event_id;
+
+
+--MULTIPLE JOINS: Retrieve all attendees and the hotel name where each one is staying.
+
+SELECT V.last_name, V.first_name, H.hotel_name
+FROM vips V LEFT JOIN reservations R
+ON V.member_id = R.member_id
+LEFT JOIN hotels H
+ON R.hotel = H.hotel_id;
+
+
+--SELF JOIN: Retrieve a list of everyone providing feedback and who is receiving that feedback.
+
+SELECT V1.Last_name AS feedback_giver_last, V1.first_name AS feedback_giver_name, V2.last_name AS Feedback_Receiver_Last, V2.first_name AS Feedback_Receiver_Name
+FROM vips V1 JOIN vips V2
+ON V1.provides_feedback_to = V2.member_id;
+
+
+--AGGREGATION FUNCTION: Count how many attendees have reservations for both the welcome and the Dinner parties.
+
+SELECT Count(welcome_rsvp) 
+FROM reservations 
+WHERE welcome_rsvp = 1 AND dinner_rsvp = 1;
+
+
+--INNER JOIN: Retrieve a list of attendees whom have reservations for the welcome AND dinner parties.
+
+SELECT V.first_name, V.last_name, R.welcome_rsvp, R.dinner_rsvp
+FROM vips V JOIN reservations R ON V.member_id = R.member_id 
+WHERE R.welcome_rsvp = 1 AND R.dinner_rsvp = 1;
